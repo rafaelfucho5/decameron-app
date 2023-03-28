@@ -3,8 +3,8 @@
 namespace App\Http\Requests;
 
 use App\Enums\RoomTypeEnums;
-use App\Rules\AccommodationTypeRule;
-use App\Rules\QuantityLessRule;
+use App\Http\Rules\AccommodationTypeRule;
+use App\Http\Rules\QuantityLessRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -25,7 +25,6 @@ class StoreRoomRequest extends FormRequest
      */
     public function rules(): array
     {
-
         return [
             'quantity' => ['required', 'integer', 'min:1', new QuantityLessRule($this->quantity, $this->hotel_id)],
             'type' => ['required', 'string', Rule::in(RoomTypeEnums::getAllValues())],

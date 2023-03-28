@@ -1,12 +1,14 @@
 <?php
 
-namespace App\Rules;
+namespace App\Http\Rules;
 
 use App\Models\Hotel;
 use Illuminate\Contracts\Validation\Rule;
 
 class QuantityLessRule implements Rule
 {
+    public Hotel $hotel;
+
     public function __construct(public string $quantity, public int $hotel_id)
     {
     }
@@ -20,17 +22,17 @@ class QuantityLessRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        $hotel = Hotel::with(['room'])->where('id',$this->hotel_id)->first();
+        $this->hotel = Hotel::with(['rooms'])->where('id',$this->hotel_id)->first();
 
-        if(count($hotel->room) == 0){
+        if(count($this->hotel->rooms) == 0){
             return true;
         }
 
-        $totalRoom = $hotel->room->sum('quantity');
+        $totalRoom = $this->hotel->rooms->sum('quantity');
 
         $newRooms = $totalRoom + $value;
 
-        if ($newRooms > $hotel->room_number){
+        if ($newRooms > $this->hotel->room_number){
             return false;
         }
 
@@ -44,6 +46,6 @@ class QuantityLessRule implements Rule
      */
     public function message()
     {
-        return 'La cantidad de habitaciones supera el maximo permitido parta el hotel seleccionado.';
+        return "La cantidad de habitaciones supera el maximo {$this->hotel->room_number} permitido parta el hotel seleccionado.";
     }
 }
