@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHotelRequest;
+use App\Http\Requests\UpdateHotelRequest;
 use App\Models\Hotel;
-use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class HotelController extends Controller
 {
@@ -14,7 +15,7 @@ class HotelController extends Controller
      */
     public function index()
     {
-        return responder()->success(Hotel::with(['rooms'])->get())->respond();
+        return responder()->success(Hotel::with('rooms')->get())->respond();
     }
 
     /**
@@ -45,16 +46,33 @@ class HotelController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Hotel $hotel)
+    public function update(UpdateHotelRequest $request, Hotel $hotel)
     {
-        //
+        $validatedData = $request->validate([
+            'name' => ['nullable'],
+            'city' => ['nullable'],
+            'room_number' => ['required','integer'],
+            'nit' => ['required','max:12',Rule::unique('hotels', 'nit')->ignore($hotel->id)],
+            'direction' => ['nullable']
+        ]);
+        $hotel->update($validatedData);
+
+        return responder()->success([
+            'message' => 'Hotel actualizado correctamente',
+            'data' => $hotel,
+        ]);
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Hotel $hotel)
     {
-        //
+        $hotel->delete();
+
+        return responder()->success([
+            'message' => 'Hotel eliminado correctamente',
+        ]);
     }
 }

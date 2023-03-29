@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreRoomRequest;
+use App\Http\Requests\UpdateRoomRequest;
 use App\Models\Hotel;
 use App\Models\Room;
 use Illuminate\Http\Request;
@@ -44,16 +45,25 @@ class RoomController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Room $room)
+    public function update(UpdateRoomRequest $request, Hotel $hotel, Room $room)
     {
-        //
+        $room->update($request->validate());
+
+        return responder()->success([
+            'message' => 'Habitaciones actualizadas correctamente',
+            'data' => $room,
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Room $room)
+    public function destroy(Hotel $hotel,Room $room)
     {
-        //
+        $room->delete();
+
+        return responder()->success([
+            'message' => 'Habitaciones eliminadas correctamente',
+        ]);
     }
 }
