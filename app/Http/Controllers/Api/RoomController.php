@@ -47,7 +47,7 @@ class RoomController extends Controller
      */
     public function update(UpdateRoomRequest $request, Hotel $hotel, Room $room)
     {
-        $room->update($request->validate());
+        $room->update($request->validated());
 
         return responder()->success([
             'message' => 'Habitaciones actualizadas correctamente',

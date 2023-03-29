@@ -48,13 +48,7 @@ class HotelController extends Controller
      */
     public function update(UpdateHotelRequest $request, Hotel $hotel)
     {
-        $validatedData = $request->validate([
-            'name' => ['nullable'],
-            'city' => ['nullable'],
-            'room_number' => ['required','integer'],
-            'nit' => ['required','max:12',Rule::unique('hotels', 'nit')->ignore($hotel->id)],
-            'direction' => ['nullable']
-        ]);
+        $validatedData = $request->validated();
         $hotel->update($validatedData);
 
         return responder()->success([

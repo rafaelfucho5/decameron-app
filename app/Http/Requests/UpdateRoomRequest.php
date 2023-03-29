@@ -18,9 +18,9 @@ class UpdateRoomRequest extends FormRequest
     public function rules()
     {
         return [
-            'quantity' => ['required', 'integer', 'min:1', new QuantityLessRule($this->quantity, $this->hotel_id)],
+            'quantity' => ['required', 'integer', 'min:1', new QuantityLessRule($this->quantity, $this->hotel->id)],
             'type' => ['required', 'string', Rule::in(RoomTypeEnums::getAllValues())],
-            'accommodation' => ['required', 'string', new AccommodationTypeRule($this->type, $this->hotel_id)],
+            'accommodation' => ['required', 'string', new AccommodationTypeRule($this->type, $this->hotel->id)],
         ];
     }
 
