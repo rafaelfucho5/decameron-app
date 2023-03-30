@@ -81,6 +81,25 @@ class RoomTest extends TestCase
     }
 
     /** @test */
+    public function test_create_with_error_room()
+    {
+        $hotel = Hotel::factory()->create();
+
+        $data = [
+            'quantity' => $this->faker->unique()->numberBetween(1, $hotel->room_number),
+            'type' => RoomTypeEnums::Estandar->value,
+            'accommodation' => RoomAccommodationEnums::Cuadruple->value,
+            'hotel_id' => $hotel->id,
+        ];
+
+        $response = $this->post("{$this->route}api/hotels/{$hotel->id}/rooms", $data);
+        $response->assertSessionHasErrors();
+
+        $response->assertSessionHasErrors(['accommodation' => 'La acomodación seleccionada no es válida para el tipo de habitación seleccionado.']);
+
+    }
+
+    /** @test */
     public function test_update_room()
     {
         $hotel = Hotel::factory()->create();
