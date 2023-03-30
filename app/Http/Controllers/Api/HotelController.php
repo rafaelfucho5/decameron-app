@@ -32,7 +32,10 @@ class HotelController extends Controller
         $hotel->direction = $request->direction;
         $hotel->save();
 
-        return responder()->success($hotel)->respond();
+        return responder()->success([
+            'message' => 'Hotel creado correctamente',
+            'data' => $hotel,
+        ])->respond();
     }
 
     /**
@@ -54,7 +57,7 @@ class HotelController extends Controller
         return responder()->success([
             'message' => 'Hotel actualizado correctamente',
             'data' => $hotel,
-        ]);
+        ])->respond();
     }
 
 

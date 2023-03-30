@@ -31,7 +31,10 @@ class RoomController extends Controller
         $room->hotel_id = $hotel->id;
         $room->save();
 
-        return responder()->success($room)->respond();
+        return responder()->success([
+            'message' => 'Habitacion creada correctamente',
+            'data' => $room,
+            ])->respond();
     }
 
     /**
@@ -50,9 +53,9 @@ class RoomController extends Controller
         $room->update($request->validated());
 
         return responder()->success([
-            'message' => 'Habitaciones actualizadas correctamente',
+            'message' => 'Habitacion actualizada correctamente',
             'data' => $room,
-        ]);
+        ])->respond();
     }
 
     /**
@@ -63,7 +66,7 @@ class RoomController extends Controller
         $room->delete();
 
         return responder()->success([
-            'message' => 'Habitaciones eliminadas correctamente',
+            'message' => 'Habitacion eliminada correctamente',
         ]);
     }
 }
