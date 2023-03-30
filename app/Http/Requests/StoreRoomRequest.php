@@ -26,10 +26,22 @@ class StoreRoomRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'quantity' => ['required', 'integer', 'min:1', new QuantityLessRule($this->quantity, $this->hotel_id)],
+            'quantity' => ['required', 'integer', 'min:1', new QuantityLessRule($this->quantity, $this->hotel->id)],
             'type' => ['required', 'string', Rule::in(RoomTypeEnums::getAllValues())],
-            'accommodation' => ['required', 'string', new AccommodationTypeRule($this->type, $this->hotel_id)],
+            'accommodation' => ['required', 'string', new AccommodationTypeRule($this->type, $this->hotel->id)],
             'hotel_id' => ['required', 'exists:hotels,id'],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'quantity.required' => 'La cantidad de habitacion es obligatorio',
+            'type.required' => 'El tipo de habitacion es obligatoria',
+            'type.in' => 'El tipo de habitacion es invalido obligatorio',
+            'accommodation.required' => 'La acomodacion de habitacion es obligatorio',
+            'hotel_id.required' => 'El id del hotel es obligatorio',
+            'hotel_id.exists' => 'El id del hotel no existe',
         ];
     }
 }
