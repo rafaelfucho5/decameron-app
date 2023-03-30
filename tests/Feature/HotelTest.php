@@ -11,11 +11,13 @@ class HotelTest extends TestCase
 {
     use RefreshDatabase;
 
-    public string $route = 'http://localhost/';
+    public string $route;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->route = config('app.url');
     }
 
     /** @test */
@@ -23,7 +25,7 @@ class HotelTest extends TestCase
     {
         Hotel::factory()->count(3)->create();
 
-        $response = $this->get("{$this->route}api/hotels");
+        $response = $this->get("{$this->route}/api/hotels");
         $response->assertSuccessful();
         $response->assertJsonCount(3);
         $response->assertJsonFragment([
@@ -44,7 +46,7 @@ class HotelTest extends TestCase
             'direction' => 'Test Direction',
         ];
 
-        $response = $this->post("{$this->route}api/hotels", $data);
+        $response = $this->post("{$this->route}/api/hotels", $data);
 
         $body = json_decode($response->getContent())->data;
 
@@ -77,7 +79,7 @@ class HotelTest extends TestCase
             'direction' => 'New Direction',
         ];
 
-        $response = $this->put("{$this->route}api/hotels/{$hotel->id}", $data);
+        $response = $this->put("{$this->route}/api/hotels/{$hotel->id}", $data);
 
         $body = json_decode($response->getContent())->data;
 
@@ -103,7 +105,7 @@ class HotelTest extends TestCase
     {
         $hotel = Hotel::factory()->create();
 
-        $response = $this->delete("{$this->route}api/hotels/{$hotel->id}");
+        $response = $this->delete("{$this->route}/api/hotels/{$hotel->id}");
 
         $response->assertStatus(200)
             ->assertJsonFragment([

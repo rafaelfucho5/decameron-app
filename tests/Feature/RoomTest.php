@@ -18,11 +18,13 @@ class RoomTest extends TestCase
 
     protected $faker;
 
-    public string $route = 'http://localhost/';
+    public string $route;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        $this->route = config('app.url');
 
         $this->faker = FakerFactory::create();
 
@@ -34,7 +36,7 @@ class RoomTest extends TestCase
         $hotel = Hotel::factory()->create();
         Room::factory()->create(['hotel_id' => $hotel->id]);
 
-        $response = $this->get("{$this->route}api/hotels/{$hotel->id}/rooms");
+        $response = $this->get("{$this->route}/api/hotels/{$hotel->id}/rooms");
         $response->assertSuccessful();
         $response->assertJsonCount(3);
         $response->assertJsonFragment([
@@ -58,7 +60,7 @@ class RoomTest extends TestCase
             'hotel_id' => $hotel->id,
         ];
 
-        $response = $this->post("{$this->route}api/hotels/{$hotel->id}/rooms", $data);
+        $response = $this->post("{$this->route}/api/hotels/{$hotel->id}/rooms", $data);
 
         $body = json_decode($response->getContent())->data;
 
@@ -92,7 +94,7 @@ class RoomTest extends TestCase
             'hotel_id' => $hotel->id,
         ];
 
-        $response = $this->post("{$this->route}api/hotels/{$hotel->id}/rooms", $data);
+        $response = $this->post("{$this->route}/api/hotels/{$hotel->id}/rooms", $data);
         $response->assertSessionHasErrors();
 
         $response->assertSessionHasErrors(['accommodation' => 'La acomodación seleccionada no es válida para el tipo de habitación seleccionado.']);
@@ -111,7 +113,7 @@ class RoomTest extends TestCase
             'accommodation' => RoomAccommodationEnums::Sencilla->value,
         ];
 
-        $response = $this->put("{$this->route}api/hotels/{$hotel->id}/rooms/{$room->id}", $data);
+        $response = $this->put("{$this->route}/api/hotels/{$hotel->id}/rooms/{$room->id}", $data);
 
         $body = json_decode($response->getContent())->data;
 
@@ -137,7 +139,7 @@ class RoomTest extends TestCase
         $hotel = Hotel::factory()->create();
         $room = Room::factory()->create(['hotel_id' => $hotel->id]);
 
-        $response = $this->delete("{$this->route}api/hotels/{$hotel->id}/rooms/{$room->id}");
+        $response = $this->delete("{$this->route}/api/hotels/{$hotel->id}/rooms/{$room->id}");
 
         $response->assertStatus(200)
             ->assertJsonFragment([
