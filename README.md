@@ -1,66 +1,65 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+## Instalación
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+- Clone el repositorio del proyecto en su máquina local:
 
-## About Laravel
+git clone https://github.com/rafaelfucho5/decameron-app
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- Acceda al directorio del proyecto:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+cd decameron-app
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- Copie el archivo .env.example y cree un archivo .env:
 
-## Learning Laravel
+cp .env.example .env
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Configure las variables de entorno en el archivo .env según sea necesario (por ejemplo, la conexión de la base de datos):
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+DB_CONNECTION=pgsql
+DB_HOST=pgsql
+DB_PORT=5432
+DB_DATABASE=nombre_de_la_base_de_datos
+DB_USERNAME=nombre_de_usuario_de_la_base_de_datos
+DB_PASSWORD=contraseña_de_la_base_de_datos
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- Ejecute el siguiente comando para construir las imágenes de Docker y ejecutar los contenedores:
 
-## Laravel Sponsors
+./vendor/bin/sail up -d
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-### Premium Partners
+- Ejecute el siguiente comando para instalar las dependencias del proyecto:
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+./vendor/bin/sail composer install
 
-## Contributing
+- Ejecute el siguiente comando para ejecutar las migraciones de la base de datos:
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+./vendor/bin/sail artisan migrate
 
-## Code of Conduct
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+- Ejecute el siguiente comando para ejecutar las pruebas:
 
-## Security Vulnerabilities
+./vendor/bin/sail artisan test
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
 
-## License
+## Servicios API
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Los siguientes son los servicios API especificados en el archivo JSON de Postman proporcionado:
+
+### Hotel
+
+index: Obtener una lista de hoteles.
+store: Crear un nuevo hotel.
+show: Obtener los detalles de un hotel.
+update: Actualizar los detalles de un hotel.
+delete; Elimina el registro de un hotel.
+
+### Room
+
+index: Obtener una lista de habitaciones de un hotel.
+store: Crear un nuevo registro de habitaciones de un hotel.
+show: Obtener los detalles de habitaciones de un hotel.
+update: Actualizar los detalles de habitaciones de un hotel.
+delete; Elimina el registro de habitaciones de un hotel.
+
+Para probar estos servicios, puede importar el archivo JSON de Postman proporcionado y ejecutar las solicitudes correspondientes. Asegúrese de actualizar la variable baseUrl en la configuración de la colección Postman con la URL correspondiente de su entorno local.
+
+¡Listo! Ahora debería tener una instancia local del proyecto con Docker y Laravel Sail en ejecución, y estar listo para probar los servicios API especificados.
