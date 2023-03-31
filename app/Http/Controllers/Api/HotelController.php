@@ -43,7 +43,7 @@ class HotelController extends Controller
      */
     public function show(Hotel $hotel)
     {
-        return responder()->success($hotel)->respond();
+        return responder()->success(Hotel::with('rooms')->find($hotel->id))->respond();
     }
 
     /**
