@@ -32,7 +32,7 @@ DB_PASSWORD=contraseña_de_la_base_de_datos
 ```
 - Ejecute el siguiente comando para ejecutar las migraciones de la base de datos:
 ```
-./vendor/bin/sail artisan migrate
+./vendor/bin/sail artisan migrate --seed --force
 ```
 
 - Ejecute el siguiente comando para ejecutar las pruebas:
